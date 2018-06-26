@@ -1,0 +1,1 @@
+Cheat sheet of _`http://learnyouahaskell.com`
