@@ -92,3 +92,114 @@ a `myCompare` b
     | a > b     = GT
     | a == b    = EQ
     | otherwise = LT
+
+-- pattern match definition
+(pattern, match) = (4, 2)
+
+-- let .. in
+cylinder :: (RealFloat a) => a -> a -> a
+cylinder r h =
+    let sideArea = 2 * pi * r * h
+        topArea = pi * r ^2
+    in  sideArea + 2 * topArea
+
+-- let is an expression, just like if .. else
+fourtytwo = 4 * (let a = 9 in a + 1) + 2
+
+-- case expression
+head'' :: [a] -> a
+head'' xs = case xs of [] -> error "No head for empty lists!"
+                      (x:_) -> x
+
+-- currying
+-- max :: (Ord a) => a -> a -> a
+-- is equivalent to
+-- max :: (Ord a) => a -> (a -> a)
+--  if we call a function with too few parameters, we get back a partially applied function
+
+-- because \ looks like a lambda
+lambda = \x y -> length x > y
+
+-- folds: use binary function to update an accumulator, starting value, input
+-- use for traversing lists to return something
+sum' :: (Num a) => [a] -> a
+sum' xs = foldl (\acc x -> acc + x) 0 xs
+
+-- scanl is similar but accumulates a list
+increasingList = scanl (+) 0 [3,5,2,1]
+
+-- function application, $ is right-associative
+sum (map sqrt [1..130]) == sum $ map sqrt [1..130]
+
+-- function composition, . works like \circ
+allNegative = map (negate . abs) [-1, 2, -3, 4]
+
+-- readability, preferred style
+oddSquareSum :: Integer
+oddSquareSum =
+    let oddSquares = filter odd $ map (^2) [1..]
+        belowLimit = takeWhile (<10000) oddSquares
+    in  sum belowLimit
+
+
+----------------------------- modules -------------------------------------
+
+-- import modules in GHCI
+:m + Data.List Data.Map
+
+-- importing functions only
+import Data.List (nub, sort)
+
+-- catching errors with Maybe, Just, Nothing
+findKey :: (Eq k) => k -> [(k,v)] -> Maybe v
+findKey key = foldr (\(k,v) acc -> if key == k then Just v else acc) Nothing
+
+-- begin filecontents Geometry.hs --
+
+-- it exports the following functions:
+module Geometry
+( sphereVolume
+, sphere Area
+) where
+
+sphereVolume :: Float -> Float
+sphereVolume radius = (4.0 / 3.0) * pi * (radius ^ 3)
+
+sphereArea :: Float -> Float
+sphereArea radius = 4 * pi * (radius ^ 2)
+
+
+-- end filecontents Geometry.hs --
+
+-- use a module from the same folder
+import Geometry
+
+-- submodules, file Sphere.hs in folder Geometry
+module Geometry.Sphere
+( volume
+, area
+) where
+
+
+-- qualified imports make you use it like Geometry.Sphere.area instead of area to resolve duplicates
+import qualified Geometry.Sphere
+-- or like Sphere.area
+import qualified Geometry.Sphere as Sphere
+
+
+
+---------------------- custom types and typeclasses -----------------------------
+
+-- using value constructors
+data Shape = Circle Float Float Float | Rectangle Float Float Float Float
+
+-- value constructions are functions, :t Circle yields (Circle is not a type, Shape is)
+Circle :: Float -> Float -> Float -> Shape
+
+surface :: Shape -> Float
+surface (Circle _ _ r) = pi * r ^ 2
+surface (Rectangle x1 y1 x2 y2) = (abs $ x2 - x1) * (abs $ y2 - y1)
+
+-- make objects printable by adding the show function
+data Point = Point Float Float deriving (Show)
+data Shape = Circle Point Float | Rectangle Point Point deriving (Show)
