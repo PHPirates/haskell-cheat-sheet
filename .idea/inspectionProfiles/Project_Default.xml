@@ -68,6 +68,7 @@
     <inspection_tool class="ForLoopReplaceableByWhile" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="m_ignoreLoopsWithoutConditions" value="false" />
     </inspection_tool>
+    <inspection_tool class="HLintInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="HtmlTagCanBeJavadocTag" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="IfStatementWithIdenticalBranches" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InstanceMethodNamingConvention" enabled="true" level="ERROR" enabled_by_default="true">

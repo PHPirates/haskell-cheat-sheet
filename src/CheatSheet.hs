@@ -1,3 +1,6 @@
+-- this doesn't compile, I know --
+
+-- search built-in stuff
 -- https://www.haskell.org/hoogle/
 
 module CheatSheet where
