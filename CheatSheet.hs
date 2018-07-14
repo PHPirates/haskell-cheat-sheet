@@ -18,6 +18,8 @@ doubleMe x = x * x
 
 doubleSmallNumber x = (if x > 100 then x else doubleMe x) + 1
 
+-- Bool, String, Integer, Int, Ratio, Float, Double, Complex
+
 ----------- lists -------------------------
 
 someList = [1, 2, 3]
